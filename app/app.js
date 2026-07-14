@@ -4,6 +4,8 @@ const ORDER_RECIPIENT_EMAIL = "representacrm@gmail.com";
 // Configured to send all WhatsApp orders to: (21) 98416-7915 -> international: 5521984167915
 const ORDER_RECIPIENT_WHATSAPP = "5521984167915";
 
+const ORDER_STATE_KEY = "pedidos-b2b-dermiwill-state";
+
 const state = {
   products: [],
   filtered: [],
@@ -47,6 +49,45 @@ function normalize(value) {
     .toLowerCase();
 }
 
+function saveAppState() {
+  const stored = {
+    cart: Array.from(state.cart.values()).map(({ product, qty }) => ({ id: product.id, qty })),
+    filter: state.filter,
+    query: state.query,
+    fields: Object.fromEntries(Object.entries(customerFields).map(([key, field]) => [key, field.value])),
+    representative: els.representative.value,
+  };
+  localStorage.setItem(ORDER_STATE_KEY, JSON.stringify(stored));
+}
+
+function loadAppState() {
+  const saved = localStorage.getItem(ORDER_STATE_KEY);
+  if (!saved) return;
+
+  try {
+    const parsed = JSON.parse(saved);
+    if (parsed.filter) state.filter = parsed.filter;
+    if (parsed.query) state.query = parsed.query;
+    if (typeof parsed.fields === "object") {
+      Object.entries(parsed.fields).forEach(([key, value]) => {
+        if (customerFields[key]) customerFields[key].value = value;
+      });
+    }
+    if (parsed.representative) els.representative.value = parsed.representative;
+    if (parsed.query) els.search.value = parsed.query;
+    if (parsed.filter) {
+      document.querySelectorAll('.segmented button').forEach((button) => {
+        button.classList.toggle('active', button.dataset.filter === state.filter);
+      });
+    }
+    if (Array.isArray(parsed.cart)) {
+      state.savedCart = parsed.cart;
+    }
+  } catch (error) {
+    console.warn('Não foi possível restaurar o pedido salvo.', error);
+  }
+}
+
 function applyFilters() {
   const query = normalize(state.query);
   state.filtered = state.products.filter((product) => {
@@ -69,6 +110,7 @@ function setProductQty(product, qty) {
   }
   renderCart();
   updateVisibleQty(product.id);
+  saveAppState();
 }
 
 function updateVisibleQty(productId) {
@@ -163,6 +205,8 @@ function renderCart() {
   els.mobileCartText.textContent = `${rows.length} ${rows.length === 1 ? "item" : "itens"}`;
   els.mobileCartTotal.textContent = BRL.format(totalValue);
   els.mobileCartBar.classList.toggle("has-items", rows.length > 0);
+
+  state.products.forEach((product) => updateVisibleQty(product.id));
 }
 
 function buildOrderText() {
@@ -371,12 +415,23 @@ async function init() {
   els.promoCount.textContent = state.products.filter((product) => product.tableKind === "promo").length;
   els.regularCount.textContent = state.products.filter((product) => product.tableKind === "vigente").length;
   state.filtered = state.products;
+  loadAppState();
+  if (Array.isArray(state.savedCart)) {
+    const productsById = new Map(state.products.map((product) => [product.id, product]));
+    state.savedCart.forEach(({ id, qty }) => {
+      const product = productsById.get(id);
+      if (product) {
+        state.cart.set(product.id, { product, qty });
+      }
+    });
+  }
   applyFilters();
   renderCart();
 }
 
 els.search.addEventListener("input", (event) => {
   state.query = event.target.value;
+  saveAppState();
   applyFilters();
 });
 
@@ -385,9 +440,16 @@ document.querySelectorAll(".segmented button").forEach((button) => {
     document.querySelectorAll(".segmented button").forEach((item) => item.classList.remove("active"));
     button.classList.add("active");
     state.filter = button.dataset.filter;
+    saveAppState();
     applyFilters();
   });
 });
+
+Object.values(customerFields).forEach((field) => {
+  field.addEventListener("input", saveAppState);
+});
+
+els.representative.addEventListener("change", saveAppState);
 
 els.previewOrder.addEventListener("click", openPhotoOrder);
 els.emailOrder.addEventListener("click", generateEmail);

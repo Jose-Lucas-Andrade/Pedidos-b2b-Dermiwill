@@ -3,35 +3,53 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pedido B2B Dermiwil BabyGo</title>
+    <title>Pedidos B2B - Dermiwil BabyGo</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="topbar">
       <div>
         <strong>Dermiwil BabyGo</strong>
-        <span>Pedido B2B</span>
+        <span>Pedido B2B online para lojistas</span>
       </div>
-      <button id="printOrder" class="icon-button" title="Imprimir pedido">Imprimir</button>
+      <button id="printOrder" class="icon-button" title="Imprimir pedido">📄 Imprimir</button>
     </header>
+
+    <div class="brand-banner">
+      <p>Gerencie e envie seus pedidos diretamente pela plataforma. Dados persistem localmente no seu navegador.</p>
+    </div>
 
     <main class="layout">
       <section class="catalog">
         <div class="catalog-intro">
           <div>
-            <h1>Tabela Dermiwil BabyGo 2026</h1>
-            <p>Escolha os produtos por caixa fechada e finalize o pedido para a central.</p>
+            <h1>Catálogo de Produtos Dermiwil BabyGo</h1>
+            <p>Selecione os produtos em caixas fechadas, revise e envie para processamento.</p>
           </div>
           <div class="intro-metrics">
             <span><strong id="promoCount">0</strong> promo</span>
             <span><strong id="regularCount">0</strong> vigente</span>
           </div>
         </div>
+        <div class="quick-info">
+          <div>
+            <strong>1. Localizar</strong>
+            <p>Pesquise por código SKU, descrição ou linha de produto.</p>
+          </div>
+          <div>
+            <strong>2. Montar</strong>
+            <p>Adicione caixas ao pedido e ajuste as quantidades.</p>
+          </div>
+          <div>
+            <strong>3. Confirmar</strong>
+            <p>Revise e envie o pedido para análise e processamento.</p>
+          </div>
+        </div>
 
         <div class="toolbar">
           <label class="search">
-            <span>Buscar</span>
-            <input id="searchInput" type="search" placeholder="Codigo, descricao, linha..." />
+            <span>Pesquisar Produtos</span>
+            <input id="searchInput" type="search" placeholder="SKU, nome do produto ou linha..." />
           </label>
 
           <div class="segmented" aria-label="Tipo de tabela">
@@ -47,7 +65,7 @@
         </div>
 
         <div id="emptyState" class="empty-state" hidden>
-          Nenhum produto encontrado. Verifique o codigo ou a descricao.
+          Nenhum produto encontrado com esses critérios. Tente refinar sua pesquisa.
         </div>
 
         <div id="productGrid" class="product-grid"></div>
@@ -57,56 +75,58 @@
         <section class="order-block">
           <div class="block-title">
             <div>
-              <h1>Pedido</h1>
-              <p>Resumo das caixas selecionadas.</p>
+              <h1>Resumo do Pedido</h1>
+              <p>Produtos selecionados aguardando envio.</p>
             </div>
           </div>
-          <div id="cartItems" class="cart-items empty">Nenhum item adicionado.</div>
+          <div id="cartItems" class="cart-items empty">Nenhum produto foi selecionado ainda.</div>
           <div class="totals">
             <div><span>Unidades</span><strong id="totalUnits">0</strong></div>
             <div><span>Caixas</span><strong id="totalBoxes">0</strong></div>
-            <div><span>Total</span><strong id="totalValue">R$ 0,00</strong></div>
+            <div><span>Valor Total</span><strong id="totalValue">R$ 0,00</strong></div>
           </div>
         </section>
 
         <section class="order-block">
           <div class="block-title">
             <div>
-              <h2>Dados da loja</h2>
-              <p>Informacoes para lancamento do pedido.</p>
+              <h2>Informações da Loja</h2>
+              <p>Dados para processamento e entrega do pedido.</p>
             </div>
           </div>
           <div class="field-grid">
-            <label>Loja<input id="storeName" type="text" autocomplete="organization" /></label>
-            <label>CNPJ<input id="storeDoc" type="text" /></label>
-            <label>CEP<input id="storeZip" type="text" autocomplete="postal-code" /></label>
-            <label>Endereco<input id="storeAddress" type="text" autocomplete="street-address" /></label>
+            <label>Razão Social<input id="storeName" type="text" autocomplete="organization" placeholder="Nome da sua loja" /></label>
+            <label>CNPJ<input id="storeDoc" type="text" placeholder="00.000.000/0000-00" /></label>
+            <label>CEP<input id="storeZip" type="text" autocomplete="postal-code" placeholder="12345-678" /></label>
+            <label>Endereço<input id="storeAddress" type="text" autocomplete="street-address" placeholder="Rua, número e complemento" /></label>
           </div>
           <div class="field-grid two">
-            <label>Contato<input id="contactName" type="text" autocomplete="name" /></label>
-            <label>Telefone<input id="contactPhone" type="tel" autocomplete="tel" /></label>
+            <label>Responsável<input id="contactName" type="text" autocomplete="name" placeholder="Nome completo" /></label>
+            <label>Telefone<input id="contactPhone" type="tel" autocomplete="tel" placeholder="(00) 00000-0000" /></label>
           </div>
-          <label>Email<input id="contactEmail" type="email" autocomplete="email" /></label>
+          <label>Email<input id="contactEmail" type="email" autocomplete="email" placeholder="seu.email@loja.com.br" /></label>
         </section>
 
         <section class="order-block">
           <div class="block-title">
             <div>
-              <h2>Atendimento</h2>
-              <p>Quem acompanhou o lojista.</p>
+              <h2>Representante</h2>
+              <p>Profissional que acompanhará este pedido.</p>
             </div>
           </div>
           <select id="representative">
-            <option value="">Selecione</option>
+            <option value="">Selecione o representante</option>
             <option>Representante 01</option>
             <option>Representante 02</option>
             <option>Representante 03</option>
           </select>
-          <label>Observacoes<textarea id="notes" rows="4"></textarea></label>
-          <button id="emailOrder" class="primary">Finalizar e enviar para central</button>
-          <button id="whatsappOrder" class="primary">Enviar por WhatsApp</button>
-          <button id="previewOrder" class="secondary">Abrir pedido com fotos</button>
-          <button id="copyOrder" class="secondary">Copiar resumo</button>
+          <label>Observações<textarea id="notes" rows="4" placeholder="Adicione observações ou instruções especiais para este pedido..."></textarea></label>
+          <div class="order-actions">
+            <button id="emailOrder" class="primary" type="button">Enviar para processamento</button>
+            <button id="whatsappOrder" class="primary" type="button">Compartilhar via WhatsApp</button>
+            <button id="previewOrder" class="secondary" type="button">Visualizar catálogo com fotos</button>
+            <button id="copyOrder" class="secondary" type="button">Copiar resumo do pedido</button>
+          </div>
         </section>
       </aside>
     </main>
@@ -130,15 +150,15 @@
           </div>
           <h3></h3>
           <dl>
-            <div><dt>Preco</dt><dd class="price"></dd></div>
-            <div><dt>Caixa</dt><dd class="box"></dd></div>
+            <div><dt>Preço Unit.</dt><dd class="price"></dd></div>
+            <div><dt>UN/Caixa</dt><dd class="box"></dd></div>
             <div><dt>IPI</dt><dd class="ipi"></dd></div>
             <div><dt>Entrega</dt><dd class="delivery"></dd></div>
           </dl>
           <div class="qty-row">
-            <button class="minus" title="Remover uma caixa">-</button>
+            <button class="minus" title="Remover caixa">−</button>
             <output>0</output>
-            <button class="plus" title="Adicionar uma caixa">+ caixa</button>
+            <button class="plus" title="Adicionar caixa">+</button>
           </div>
         </div>
       </article>
