@@ -237,6 +237,9 @@ function buildOrderText() {
     `Total de caixas: ${totalBoxes}`,
     `Total do pedido: ${BRL.format(totalValue)}`,
     "",
+    "Observações de preço: Todos os itens estão com valor cheio e sem descontos aplicados.",
+    "Valores tabelados; condições comerciais são negociadas separadamente.",
+    "",
     `Observações: ${customerFields.notes.value || "-"}`,
   ];
 
