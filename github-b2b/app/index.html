@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pedido B2B Dermiwil BabyGo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <strong>Dermiwil BabyGo</strong>
+        <span>Pedido B2B</span>
+      </div>
+      <button id="printOrder" class="icon-button" title="Imprimir pedido">Imprimir</button>
+    </header>
+
+    <main class="layout">
+      <section class="catalog">
+        <div class="catalog-intro">
+          <div>
+            <h1>Tabela Dermiwil BabyGo 2026</h1>
+            <p>Escolha os produtos por caixa fechada e finalize o pedido para a central.</p>
+          </div>
+          <div class="intro-metrics">
+            <span><strong id="promoCount">0</strong> promo</span>
+            <span><strong id="regularCount">0</strong> vigente</span>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <label class="search">
+            <span>Buscar</span>
+            <input id="searchInput" type="search" placeholder="Codigo, descricao, linha..." />
+          </label>
+
+          <div class="segmented" aria-label="Tipo de tabela">
+            <button data-filter="all" class="active">Todas</button>
+            <button data-filter="vigente">Vigente</button>
+            <button data-filter="promo">Promo</button>
+          </div>
+        </div>
+
+        <div class="stats">
+          <span id="resultCount">0 produtos</span>
+          <span id="cartCount">0 itens no pedido</span>
+        </div>
+
+        <div id="emptyState" class="empty-state" hidden>
+          Nenhum produto encontrado. Verifique o codigo ou a descricao.
+        </div>
+
+        <div id="productGrid" class="product-grid"></div>
+      </section>
+
+      <aside id="orderPanel" class="order-panel">
+        <section class="order-block">
+          <div class="block-title">
+            <div>
+              <h1>Pedido</h1>
+              <p>Resumo das caixas selecionadas.</p>
+            </div>
+          </div>
+          <div id="cartItems" class="cart-items empty">Nenhum item adicionado.</div>
+          <div class="totals">
+            <div><span>Unidades</span><strong id="totalUnits">0</strong></div>
+            <div><span>Caixas</span><strong id="totalBoxes">0</strong></div>
+            <div><span>Total</span><strong id="totalValue">R$ 0,00</strong></div>
+          </div>
+        </section>
+
+        <section class="order-block">
+          <div class="block-title">
+            <div>
+              <h2>Dados da loja</h2>
+              <p>Informacoes para lancamento do pedido.</p>
+            </div>
+          </div>
+          <div class="field-grid">
+            <label>Loja<input id="storeName" type="text" autocomplete="organization" /></label>
+            <label>CNPJ<input id="storeDoc" type="text" /></label>
+            <label>CEP<input id="storeZip" type="text" autocomplete="postal-code" /></label>
+            <label>Endereco<input id="storeAddress" type="text" autocomplete="street-address" /></label>
+          </div>
+          <div class="field-grid two">
+            <label>Contato<input id="contactName" type="text" autocomplete="name" /></label>
+            <label>Telefone<input id="contactPhone" type="tel" autocomplete="tel" /></label>
+          </div>
+          <label>Email<input id="contactEmail" type="email" autocomplete="email" /></label>
+        </section>
+
+        <section class="order-block">
+          <div class="block-title">
+            <div>
+              <h2>Atendimento</h2>
+              <p>Quem acompanhou o lojista.</p>
+            </div>
+          </div>
+          <select id="representative">
+            <option value="">Selecione</option>
+            <option>Representante 01</option>
+            <option>Representante 02</option>
+            <option>Representante 03</option>
+          </select>
+          <label>Observacoes<textarea id="notes" rows="4"></textarea></label>
+          <button id="emailOrder" class="primary">Finalizar e enviar para central</button>
+          <button id="previewOrder" class="secondary">Abrir pedido com fotos</button>
+          <button id="copyOrder" class="secondary">Copiar resumo</button>
+        </section>
+      </aside>
+    </main>
+
+    <button id="mobileCartBar" class="mobile-cart-bar" type="button">
+      <span id="mobileCartText">0 itens</span>
+      <strong id="mobileCartTotal">R$ 0,00</strong>
+      <span>Ver pedido</span>
+    </button>
+
+    <template id="productTemplate">
+      <article class="product-card">
+        <div class="photo-wrap">
+          <img alt="" loading="lazy" />
+          <span class="badge"></span>
+        </div>
+        <div class="product-body">
+          <div class="product-topline">
+            <div class="code"></div>
+            <div class="box-chip"></div>
+          </div>
+          <h3></h3>
+          <dl>
+            <div><dt>Preco</dt><dd class="price"></dd></div>
+            <div><dt>Caixa</dt><dd class="box"></dd></div>
+            <div><dt>IPI</dt><dd class="ipi"></dd></div>
+            <div><dt>Entrega</dt><dd class="delivery"></dd></div>
+          </dl>
+          <div class="qty-row">
+            <button class="minus" title="Remover uma caixa">-</button>
+            <output>0</output>
+            <button class="plus" title="Adicionar uma caixa">+ caixa</button>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "vigente": {
+    "tableLabel": "Tabela vigente",
+    "productsInPdf": 554,
+    "images": 552,
+    "matchedImages": 552,
+    "missingImages": [
+      "03472",
+      "52397"
+    ],
+    "extraImages": []
+  },
+  "promo": {
+    "tableLabel": "Tabela promocional",
+    "productsInPdf": 153,
+    "images": 155,
+    "matchedImages": 152,
+    "missingImages": [
+      "13174"
+    ],
+    "extraImages": [
+      "13774",
+      "29281",
+      "49282"
+    ]
+  }
+}
