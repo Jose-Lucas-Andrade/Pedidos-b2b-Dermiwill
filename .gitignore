@@ -9,6 +9,7 @@ Tabela Vigente-20260710T170757Z-2-001/
 .agents/
 __pycache__/
 *.pyc
+github-b2b/.git-nested-backup/
 
 # OS/editor noise
 .DS_Store
