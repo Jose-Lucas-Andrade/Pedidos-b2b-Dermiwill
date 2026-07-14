@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/app/(.*)", "dest": "/app/$1" },
+    { "src": "/", "dest": "/app/" },
+    { "src": "/(.*)", "dest": "/app/$1" }
+  ],
+  "cleanUrls": true
+}

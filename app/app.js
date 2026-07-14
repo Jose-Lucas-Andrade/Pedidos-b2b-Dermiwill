@@ -1,5 +1,8 @@
 const BRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 const ORDER_RECIPIENT_EMAIL = "representacrm@gmail.com";
+// Central WhatsApp number in international format without + or spaces (BR: 55)
+// Configured to send all WhatsApp orders to: (21) 98416-7915 -> international: 5521984167915
+const ORDER_RECIPIENT_WHATSAPP = "5521984167915";
 
 const state = {
   products: [],
@@ -24,6 +27,7 @@ const els = {
   previewOrder: document.querySelector("#previewOrder"),
   emailOrder: document.querySelector("#emailOrder"),
   copyOrder: document.querySelector("#copyOrder"),
+  whatsappOrder: document.querySelector("#whatsappOrder"),
   printOrder: document.querySelector("#printOrder"),
   promoCount: document.querySelector("#promoCount"),
   regularCount: document.querySelector("#regularCount"),
@@ -215,6 +219,27 @@ function generateEmail() {
   window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
+function sendWhatsApp() {
+  const error = validateOrder();
+  if (error) {
+    alert(error);
+    return;
+  }
+
+  const body = buildOrderText();
+  const encoded = encodeURIComponent(body);
+  let url;
+  if (ORDER_RECIPIENT_WHATSAPP) {
+    // open chat with specific number
+    url = `https://wa.me/${ORDER_RECIPIENT_WHATSAPP}?text=${encoded}`;
+  } else {
+    // generic share (user chooses contact)
+    url = `https://wa.me/?text=${encoded}`;
+  }
+
+  window.open(url, "_blank");
+}
+
 function escapeHtml(value) {
   return String(value || "")
     .replace(/&/g, "&amp;")
@@ -366,6 +391,7 @@ document.querySelectorAll(".segmented button").forEach((button) => {
 
 els.previewOrder.addEventListener("click", openPhotoOrder);
 els.emailOrder.addEventListener("click", generateEmail);
+els.whatsappOrder.addEventListener("click", sendWhatsApp);
 els.copyOrder.addEventListener("click", copyOrder);
 els.printOrder.addEventListener("click", () => window.print());
 els.mobileCartBar.addEventListener("click", () => {
