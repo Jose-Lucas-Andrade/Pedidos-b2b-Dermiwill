@@ -1,0 +1,14 @@
+# Ignore heavy local archives and raw files not needed for deployment
+*.zip
+PDF*/
+PDFs*/
+Tabela*-
+Tabela*/
+
+# Node, editor, and OS files
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Git nested backup
+github-b2b/.git-nested-backup/
